@@ -23,7 +23,7 @@ public class ProductManager<T> {
 
     public boolean removeProduct(int id) throws Exception {
         if (getProductById(id) == null)
-            throw new Exception("Wrong ID!");
+            throw new Exception("Wrong Id!");
 
         products.remove(id - 1);
 
