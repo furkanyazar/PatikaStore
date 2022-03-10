@@ -1,9 +1,11 @@
-public class Notebook {
+public class Notebook extends Product {
 
     private int batteryPower;
     private String color;
 
-    public Notebook(int batteryPower, String color) {
+    public Notebook(int id, double unitPrice, int discountRate, int unitsInStock, String name, Brand brand,
+            int memorySize, double screenSize, int ramCapacity, int batteryPower, String color) {
+        super(id, unitPrice, discountRate, unitsInStock, name, brand, memorySize, screenSize, ramCapacity);
         this.batteryPower = batteryPower;
         this.color = color;
     }
