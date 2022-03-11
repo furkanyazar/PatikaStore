@@ -128,7 +128,16 @@ public class Store {
 
                     continue;
                 case 2:
-                    listPhonesForDelete();
+                    Phone phone = listPhonesForDelete();
+
+                    if (phone != null) {
+                        try {
+                            phoneManager.removeProduct(phone.getId());
+                        } catch (Exception e) {
+                            e.getMessage();
+                        }
+                    }
+
                     continue;
                 case 3:
                     listPhones();
@@ -137,6 +146,7 @@ public class Store {
                     listPhonesByBrand();
                     continue;
                 case 5:
+                    getPhoneById();
                     continue;
                 case 0:
                     return;
@@ -144,6 +154,24 @@ public class Store {
                     continue;
             }
         }
+    }
+
+    public void notebookOperations() {
+
+    }
+
+    public void getPhoneById() {
+        Phone phone = listPhonesForDelete();
+
+        System.out.println();
+        System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                + phone.getColor());
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
     }
 
     public void listPhonesByBrand() {
@@ -180,7 +208,7 @@ public class Store {
         scanner.nextLine();
     }
 
-    public void listPhonesForDelete() {
+    public Phone listPhonesForDelete() {
         int selectedOption = -1;
 
         while (true) {
@@ -210,17 +238,9 @@ public class Store {
         }
 
         if (selectedOption == 0)
-            return;
+            return null;
 
-        try {
-            phoneManager.removeProduct(selectedOption);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void notebookOperations() {
-
+        return phoneManager.getProductById(selectedOption);
     }
 
     public void enterPhoneInfo(Brand brand) {
