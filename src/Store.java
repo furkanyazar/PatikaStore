@@ -86,11 +86,7 @@ public class Store {
                 continue;
             }
 
-            if (selectedOption == 0)
-                break;
-            else if (selectedOption < 0)
-                continue;
-            else if (selectedOption > brandManager.getBrands().size())
+            if (selectedOption < 0 || selectedOption > brandManager.getBrands().size())
                 continue;
 
             break;
@@ -132,6 +128,7 @@ public class Store {
 
                     continue;
                 case 2:
+                    listPhonesForDelete();
                     continue;
                 case 3:
                     listPhones();
@@ -158,6 +155,49 @@ public class Store {
                     + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
                     + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
                     + phone.getColor());
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
+    }
+
+    public void listPhonesForDelete() {
+        int selectedOption = -1;
+
+        while (true) {
+            System.out.println();
+            System.out.println("Select phone");
+            System.out.println("------------------------");
+
+            for (Phone phone : phoneManager.getProducts())
+                System.out.println(phone.getId() + " -> " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                        + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                        + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                        + phone.getColor());
+
+            System.out.println("0 -> Go to back");
+            System.out.print("Your choice: ");
+
+            try {
+                selectedOption = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                continue;
+            }
+
+            if (selectedOption < 0 || selectedOption > phoneManager.getProducts().size())
+                continue;
+
+            break;
+        }
+
+        if (selectedOption == 0)
+            return;
+
+        try {
+            phoneManager.removeProduct(selectedOption);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void notebookOperations() {

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductManager<T> {
+public class ProductManager<T extends Product> {
 
     private List<T> products = new ArrayList<>();
 
@@ -10,11 +10,23 @@ public class ProductManager<T> {
     }
 
     public T getProductById(int id) {
-        return products.get(id - 1);
+        T product = null;
+
+        for (T t : products)
+            if (t.getId() == id)
+                product = t;
+
+        return product;
     }
 
     public T getProductByBrand(Brand brand) {
-        return products.get(products.indexOf(brand));
+        T product = null;
+
+        for (T t : products)
+            if (t.getBrand() == brand)
+                product = t;
+
+        return product;
     }
 
     public boolean addProduct(T t) {
@@ -23,9 +35,9 @@ public class ProductManager<T> {
 
     public boolean removeProduct(int id) throws Exception {
         if (getProductById(id) == null)
-            throw new Exception("Wrong Id!");
+            throw new Exception("Phone not found");
 
-        products.remove(id - 1);
+        products.remove(getProductById(id));
 
         return true;
     }
