@@ -127,11 +127,10 @@ public class Store {
                 case 1:
                     Brand brand = listBrandsForAddProduct();
 
-                    if (brand != null) {
-                        Phone phone = enterPhoneInfo(brand);
-                        phoneManager.addProduct(phone);
-                    }
-                    break;
+                    if (brand != null)
+                        enterPhoneInfo(brand);
+
+                    continue;
                 case 2:
                     continue;
                 case 3:
@@ -154,16 +153,18 @@ public class Store {
         System.out.println("Phones");
         System.out.println("------------");
 
-        for (Phone phone : phoneManager.getProducts()) {
-            System.out.println(phone.getId());
-        }
+        for (Phone phone : phoneManager.getProducts())
+            System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                    + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                    + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                    + phone.getColor());
     }
 
     public void notebookOperations() {
 
     }
 
-    public Phone enterPhoneInfo(Brand brand) {
+    public void enterPhoneInfo(Brand brand) {
         double unitPrice = 0.0;
         int discountRate = -1;
         int unitsInStock = 0;
@@ -202,8 +203,9 @@ public class Store {
         batteryPower = scanNextInt("Battery power", batteryPower);
         color = scanNextString("Color", color);
 
-        return new Phone(phoneManager.getProducts().size() + 1, unitPrice, discountRate, unitsInStock, name, brand,
-                memorySize, screenSize, ramCapacity, batteryPower, color);
+        phoneManager.addProduct(
+                new Phone(phoneManager.getProducts().size() + 1, unitPrice, discountRate, unitsInStock, name, brand,
+                        memorySize, screenSize, ramCapacity, batteryPower, color));
     }
 
     public int scanNextInt(String property, int value) {

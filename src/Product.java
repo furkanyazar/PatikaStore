@@ -32,7 +32,7 @@ public class Product {
     }
 
     public double getUnitPrice() {
-        return unitPrice;
+        return unitPrice - (unitPrice * discountRate / 100);
     }
 
     public void setUnitPrice(double unitPrice) {
