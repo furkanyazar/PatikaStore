@@ -46,7 +46,61 @@ public class Store {
     }
 
     public void notebookOperations() {
+        int selectedOption = -1;
 
+        while (true) {
+            System.out.println();
+            System.out.println("Notebook Operations");
+            System.out.println("--------------------------------");
+            System.out.println("1 -> Add new notebook");
+            System.out.println("2 -> Delete notebook by Id");
+            System.out.println("3 -> List notebooks");
+            System.out.println("4 -> List notebooks by brand");
+            System.out.println("5 -> Get notebook by Id");
+            System.out.println("0 -> Go to back");
+            System.out.print("Your choice: ");
+
+            try {
+                selectedOption = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                continue;
+            }
+
+            switch (selectedOption) {
+                case 1:
+                    Brand brand = listBrandsForSelect();
+
+                    if (brand != null)
+                        enterNotebookInfo(brand);
+
+                    continue;
+                case 2:
+                    Notebook notebook = listNotebooksForDelete();
+
+                    if (notebook != null) {
+                        try {
+                            notebookManager.removeProduct(notebook.getId());
+                        } catch (Exception e) {
+                            e.getMessage();
+                        }
+                    }
+
+                    continue;
+                case 3:
+                    listNotebooks();
+                    continue;
+                case 4:
+                    listNotebooksByBrand();
+                    continue;
+                case 5:
+                    getNotebookById();
+                    continue;
+                case 0:
+                    return;
+                default:
+                    continue;
+            }
+        }
     }
 
     public void phoneOperations() {
@@ -72,7 +126,7 @@ public class Store {
 
             switch (selectedOption) {
                 case 1:
-                    Brand brand = listBrandsForAddProduct();
+                    Brand brand = listBrandsForSelect();
 
                     if (brand != null)
                         enterPhoneInfo(brand);
@@ -120,7 +174,7 @@ public class Store {
         scanner.nextLine();
     }
 
-    public Brand listBrandsForAddProduct() {
+    public Brand listBrandsForSelect() {
         int selectedOption = -1;
 
         while (true) {
@@ -158,6 +212,47 @@ public class Store {
             return null;
 
         return brandManager.getBrandById(selectedOption);
+    }
+
+    public void enterNotebookInfo(Brand brand) {
+        double unitPrice = 0.0;
+        int discountRate = -1;
+        int unitsInStock = 0;
+        String name = "";
+        int memorySize = 0;
+        double screenSize = 0.0;
+        int ramCapacity = 0;
+
+        System.out.println();
+        System.out.println("Notebook Informations");
+        System.out.println("------------------------------------");
+
+        unitPrice = scanNextDouble("Unit price", unitPrice);
+
+        while (true) {
+            System.out.print("Discount rate: ");
+
+            try {
+                if (discountRate < 0) {
+                    discountRate = Integer.parseInt(scanner.nextLine());
+                    if (discountRate >= 0)
+                        break;
+                }
+            } catch (Exception e) {
+                continue;
+            }
+        }
+
+        unitsInStock = scanNextInt("Units in stock", unitsInStock);
+        name = scanNextString("Name", name);
+        memorySize = scanNextInt("Memory size", memorySize);
+        screenSize = scanNextDouble("Screen size", screenSize);
+        ramCapacity = scanNextInt("Ram capacity", ramCapacity);
+
+        notebookManager.addProduct(
+                new Notebook(notebookManager.getProducts().size() + 1, unitPrice, discountRate, unitsInStock, name,
+                        brand,
+                        memorySize, screenSize, ramCapacity));
     }
 
     public void enterPhoneInfo(Brand brand) {
@@ -204,6 +299,41 @@ public class Store {
                         memorySize, screenSize, ramCapacity, batteryPower, color));
     }
 
+    public Notebook listNotebooksForDelete() {
+        int selectedOption = -1;
+
+        while (true) {
+            System.out.println();
+            System.out.println("Select notebook");
+            System.out.println("------------------------");
+
+            for (Notebook notebook : notebookManager.getProducts())
+                System.out.println(
+                        notebook.getId() + " -> " + notebook.getName() + " | " + notebook.getUnitPrice() + " TL | "
+                                + notebook.getBrand().getName() + " | " + notebook.getMemorySize() + " GB | "
+                                + notebook.getScreenSize() + "\" | " + notebook.getRamCapacity() + " GB");
+
+            System.out.println("0 -> Go to back");
+            System.out.print("Your choice: ");
+
+            try {
+                selectedOption = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                continue;
+            }
+
+            if (selectedOption < 0 || selectedOption > notebookManager.getProducts().size())
+                continue;
+
+            break;
+        }
+
+        if (selectedOption == 0)
+            return null;
+
+        return notebookManager.getProductById(selectedOption);
+    }
+
     public Phone listPhonesForDelete() {
         int selectedOption = -1;
 
@@ -239,6 +369,21 @@ public class Store {
         return phoneManager.getProductById(selectedOption);
     }
 
+    public void listNotebooks() {
+        System.out.println();
+        System.out.println("Notebooks");
+        System.out.println("------------");
+
+        for (Notebook notebook : notebookManager.getProducts())
+            System.out.println("- " + notebook.getName() + " | " + notebook.getUnitPrice() + " TL | "
+                    + notebook.getBrand().getName() + " | " + notebook.getMemorySize() + " GB | "
+                    + notebook.getScreenSize() + "\" | " + notebook.getRamCapacity() + " GB");
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
+    }
+
     public void listPhones() {
         System.out.println();
         System.out.println("Phones");
@@ -255,8 +400,25 @@ public class Store {
         scanner.nextLine();
     }
 
+    public void listNotebooksByBrand() {
+        Brand brand = listBrandsForSelect();
+
+        System.out.println();
+        System.out.println("Notebooks by " + brand.getName());
+        System.out.println("---------------------------");
+
+        for (Notebook notebook : notebookManager.getProductsByBrand(brand))
+            System.out.println("- " + notebook.getName() + " | " + notebook.getUnitPrice() + " TL | "
+                    + notebook.getBrand().getName() + " | " + notebook.getMemorySize() + " GB | "
+                    + notebook.getScreenSize() + "\" | " + notebook.getRamCapacity() + " GB");
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
+    }
+
     public void listPhonesByBrand() {
-        Brand brand = listBrandsForAddProduct();
+        Brand brand = listBrandsForSelect();
 
         System.out.println();
         System.out.println("Phones by " + brand.getName());
@@ -267,6 +429,19 @@ public class Store {
                     + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
                     + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
                     + phone.getColor());
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
+    }
+
+    public void getNotebookById() {
+        Notebook notebook = listNotebooksForDelete();
+
+        System.out.println();
+        System.out.println("- " + notebook.getName() + " | " + notebook.getUnitPrice() + " TL | "
+                + notebook.getBrand().getName() + " | " + notebook.getMemorySize() + " GB | " + notebook.getScreenSize()
+                + "\" | " + notebook.getRamCapacity() + " GB");
 
         System.out.println();
         System.out.print("Press enter to continue");
