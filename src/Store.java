@@ -45,57 +45,8 @@ public class Store {
         }
     }
 
-    public void listBrands() {
-        System.out.println();
-        System.out.println("Brands");
-        System.out.println("------------");
+    public void notebookOperations() {
 
-        for (Brand brand : brandManager.getBrands())
-            System.out.println("- " + brand.getName());
-
-        System.out.println();
-        System.out.print("Press enter to continue");
-        scanner.nextLine();
-    }
-
-    public Brand listBrandsForAddProduct() {
-        int selectedOption = -1;
-
-        while (true) {
-            System.out.println();
-            System.out.println("Select brand");
-            System.out.println("------------------------");
-
-            List<Brand> brands = brandManager.getBrands();
-            brands.sort(new Comparator<Brand>() {
-                @Override
-                public int compare(Brand o1, Brand o2) {
-                    return o1.getId() - o2.getId();
-                }
-            });
-
-            for (Brand brand : brands)
-                System.out.println(brand.getId() + " -> " + brand.getName());
-
-            System.out.println("0 -> Go to back");
-            System.out.print("Your choice: ");
-
-            try {
-                selectedOption = Integer.parseInt(scanner.nextLine());
-            } catch (Exception e) {
-                continue;
-            }
-
-            if (selectedOption < 0 || selectedOption > brandManager.getBrands().size())
-                continue;
-
-            break;
-        }
-
-        if (selectedOption == 0)
-            return null;
-
-        return brandManager.getBrandById(selectedOption);
     }
 
     public void phoneOperations() {
@@ -156,71 +107,37 @@ public class Store {
         }
     }
 
-    public void notebookOperations() {
-
-    }
-
-    public void getPhoneById() {
-        Phone phone = listPhonesForDelete();
-
+    public void listBrands() {
         System.out.println();
-        System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
-                + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
-                + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
-                + phone.getColor());
-
-        System.out.println();
-        System.out.print("Press enter to continue");
-        scanner.nextLine();
-    }
-
-    public void listPhonesByBrand() {
-        Brand brand = listBrandsForAddProduct();
-
-        System.out.println();
-        System.out.println("Phones by " + brand.getName());
-        System.out.println("---------------------------");
-
-        for (Phone phone : phoneManager.getProductsByBrand(brand))
-            System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
-                    + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
-                    + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
-                    + phone.getColor());
-
-        System.out.println();
-        System.out.print("Press enter to continue");
-        scanner.nextLine();
-    }
-
-    public void listPhones() {
-        System.out.println();
-        System.out.println("Phones");
+        System.out.println("Brands");
         System.out.println("------------");
 
-        for (Phone phone : phoneManager.getProducts())
-            System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
-                    + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
-                    + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
-                    + phone.getColor());
+        for (Brand brand : brandManager.getBrands())
+            System.out.println("- " + brand.getName());
 
         System.out.println();
         System.out.print("Press enter to continue");
         scanner.nextLine();
     }
 
-    public Phone listPhonesForDelete() {
+    public Brand listBrandsForAddProduct() {
         int selectedOption = -1;
 
         while (true) {
             System.out.println();
-            System.out.println("Select phone");
+            System.out.println("Select brand");
             System.out.println("------------------------");
 
-            for (Phone phone : phoneManager.getProducts())
-                System.out.println(phone.getId() + " -> " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
-                        + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
-                        + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
-                        + phone.getColor());
+            List<Brand> brands = brandManager.getBrands();
+            brands.sort(new Comparator<Brand>() {
+                @Override
+                public int compare(Brand o1, Brand o2) {
+                    return o1.getId() - o2.getId();
+                }
+            });
+
+            for (Brand brand : brands)
+                System.out.println(brand.getId() + " -> " + brand.getName());
 
             System.out.println("0 -> Go to back");
             System.out.print("Your choice: ");
@@ -231,7 +148,7 @@ public class Store {
                 continue;
             }
 
-            if (selectedOption < 0 || selectedOption > phoneManager.getProducts().size())
+            if (selectedOption < 0 || selectedOption > brandManager.getBrands().size())
                 continue;
 
             break;
@@ -240,7 +157,7 @@ public class Store {
         if (selectedOption == 0)
             return null;
 
-        return phoneManager.getProductById(selectedOption);
+        return brandManager.getBrandById(selectedOption);
     }
 
     public void enterPhoneInfo(Brand brand) {
@@ -285,6 +202,89 @@ public class Store {
         phoneManager.addProduct(
                 new Phone(phoneManager.getProducts().size() + 1, unitPrice, discountRate, unitsInStock, name, brand,
                         memorySize, screenSize, ramCapacity, batteryPower, color));
+    }
+
+    public Phone listPhonesForDelete() {
+        int selectedOption = -1;
+
+        while (true) {
+            System.out.println();
+            System.out.println("Select phone");
+            System.out.println("------------------------");
+
+            for (Phone phone : phoneManager.getProducts())
+                System.out.println(phone.getId() + " -> " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                        + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                        + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                        + phone.getColor());
+
+            System.out.println("0 -> Go to back");
+            System.out.print("Your choice: ");
+
+            try {
+                selectedOption = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                continue;
+            }
+
+            if (selectedOption < 0 || selectedOption > phoneManager.getProducts().size())
+                continue;
+
+            break;
+        }
+
+        if (selectedOption == 0)
+            return null;
+
+        return phoneManager.getProductById(selectedOption);
+    }
+
+    public void listPhones() {
+        System.out.println();
+        System.out.println("Phones");
+        System.out.println("------------");
+
+        for (Phone phone : phoneManager.getProducts())
+            System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                    + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                    + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                    + phone.getColor());
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
+    }
+
+    public void listPhonesByBrand() {
+        Brand brand = listBrandsForAddProduct();
+
+        System.out.println();
+        System.out.println("Phones by " + brand.getName());
+        System.out.println("---------------------------");
+
+        for (Phone phone : phoneManager.getProductsByBrand(brand))
+            System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                    + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                    + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                    + phone.getColor());
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
+    }
+
+    public void getPhoneById() {
+        Phone phone = listPhonesForDelete();
+
+        System.out.println();
+        System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                + phone.getColor());
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
     }
 
     public int scanNextInt(String property, int value) {
