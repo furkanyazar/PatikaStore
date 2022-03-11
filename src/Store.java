@@ -134,6 +134,7 @@ public class Store {
                     listPhones();
                     continue;
                 case 4:
+                    listPhonesByBrand();
                     continue;
                 case 5:
                     continue;
@@ -143,6 +144,24 @@ public class Store {
                     continue;
             }
         }
+    }
+
+    public void listPhonesByBrand() {
+        Brand brand = listBrandsForAddProduct();
+
+        System.out.println();
+        System.out.println("Phones by " + brand.getName());
+        System.out.println("---------------------------");
+
+        for (Phone phone : phoneManager.getProductsByBrand(brand))
+            System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                    + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                    + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                    + phone.getColor());
+
+        System.out.println();
+        System.out.print("Press enter to continue");
+        scanner.nextLine();
     }
 
     public void listPhones() {

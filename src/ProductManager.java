@@ -19,14 +19,18 @@ public class ProductManager<T extends Product> {
         return product;
     }
 
-    public T getProductByBrand(Brand brand) {
-        T product = null;
+    public List<T> getProductsByBrand(Brand brand) {
+        List<T> productsByBrand = null;
 
         for (T t : products)
-            if (t.getBrand() == brand)
-                product = t;
+            if (t.getBrand() == brand) {
+                if (productsByBrand == null)
+                    productsByBrand = new ArrayList<>();
 
-        return product;
+                productsByBrand.add(t);
+            }
+
+        return productsByBrand;
     }
 
     public boolean addProduct(T t) {
