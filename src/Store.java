@@ -402,15 +402,17 @@ public class Store {
 
     public void listNotebooksByBrand() {
         Brand brand = listBrandsForSelect();
+        List<Notebook> notebooks = notebookManager.getProductsByBrand(brand);
 
         System.out.println();
         System.out.println("Notebooks by " + brand.getName());
         System.out.println("---------------------------");
 
-        for (Notebook notebook : notebookManager.getProductsByBrand(brand))
-            System.out.println("- " + notebook.getName() + " | " + notebook.getUnitPrice() + " TL | "
-                    + notebook.getBrand().getName() + " | " + notebook.getMemorySize() + " GB | "
-                    + notebook.getScreenSize() + "\" | " + notebook.getRamCapacity() + " GB");
+        if (notebooks != null)
+            for (Notebook notebook : notebookManager.getProductsByBrand(brand))
+                System.out.println("- " + notebook.getName() + " | " + notebook.getUnitPrice() + " TL | "
+                        + notebook.getBrand().getName() + " | " + notebook.getMemorySize() + " GB | "
+                        + notebook.getScreenSize() + "\" | " + notebook.getRamCapacity() + " GB");
 
         System.out.println();
         System.out.print("Press enter to continue");
@@ -419,16 +421,18 @@ public class Store {
 
     public void listPhonesByBrand() {
         Brand brand = listBrandsForSelect();
+        List<Phone> phones = phoneManager.getProductsByBrand(brand);
 
         System.out.println();
         System.out.println("Phones by " + brand.getName());
         System.out.println("---------------------------");
 
-        for (Phone phone : phoneManager.getProductsByBrand(brand))
-            System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
-                    + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
-                    + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
-                    + phone.getColor());
+        if (phones != null)
+            for (Phone phone : phoneManager.getProductsByBrand(brand))
+                System.out.println("- " + phone.getName() + " | " + phone.getUnitPrice() + " TL | "
+                        + phone.getBrand().getName() + " | " + phone.getMemorySize() + " GB | " + phone.getScreenSize()
+                        + "\" | " + phone.getBatteryPower() + " mAh | " + phone.getRamCapacity() + " GB | "
+                        + phone.getColor());
 
         System.out.println();
         System.out.print("Press enter to continue");
